@@ -55,7 +55,7 @@ public:
 
 	/*template<typename T1, typename T2>
 	T1 operator()(T2&& arg) {
-		return counter(forward<T2>(arg));
+		return (*counter)(forward<T2>(arg));
 	}*/
 
 private:
