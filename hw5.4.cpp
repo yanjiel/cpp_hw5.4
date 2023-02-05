@@ -21,7 +21,7 @@ public:
 	ctr(T1(*func)(T2)) {
 		count = 0;
 		fun = func;
-		//cout << typeid(func).name() << ", " << typeid(func).name() << ", " << typeid(*fun).name() << endl;
+		//cout << typeid(func).name() << ", " << typeid(fun).name() << ", " << typeid(*fun).name() << endl;
 	}
 
 	T1 operator()(T2 arg) const {
@@ -44,6 +44,25 @@ private:
 template <typename T1, typename T2>
 int ctr<T1, T2>::count = 0;
 
+class Counter {
+public:
+	template<typename T1, typename T2>
+	Counter(T1(*func)(T2)) {
+		cout << typeid(func).name() << ", " << typeid(*func).name() << endl;
+		ctr<T1, T2> *counter = new ctr<T1, T2>(func);
+		cout << typeid(counter).name() << ", " << typeid(*counter).name() << endl;
+	}
+
+	/*template<typename T1, typename T2>
+	T1 operator()(T2&& arg) {
+		return counter(forward<T2>(arg));
+	}*/
+
+private:
+	template<typename T1, typename T2>
+	static ctr<T1, T2> counter;
+
+};
 
 
 
@@ -88,10 +107,10 @@ int main() {
 	/*Counter2 cf(f);
 	cf(1.3);*/
 	
+	Counter cf(f);
 
-
-	ctr<int, double> cf(f);
+	/*ctr<int, double> cf(f);
 	cf.print();
-	cout << cf(1.3);
+	cout << cf(1.3);*/
 
 }
