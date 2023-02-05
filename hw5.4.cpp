@@ -3,6 +3,7 @@
 #include<string>
 #include<vector>
 #include<typeinfo>
+#include<format>
 using namespace std;
 
 
@@ -18,21 +19,18 @@ public:
 
 	Counter(T1(*func)(T2)) {
 		count = 0;
-		fun = func;
-		//cout << typeid(func).name() << ", " << typeid(fun).name() << ", " << typeid(*fun).name() << endl;
+		fun = move(func);
 	}
 
 	T1 operator()(T2 arg) const {
 		count += 1;
 		return (*fun)(forward<T2>(arg));
-		//return (*fun)(arg);
-		//return static_cast<T1> (1);
 	}
 
-	void print() {
+	/*void print() {
 		cout << "here" << endl;
 		cout << (*fun)(static_cast<T2>(3)) << endl;
-	}
+	}*/
 
 private:
 	T1 (*fun) (T2) = NULL;
@@ -103,9 +101,6 @@ int main() {
 
 	Counter cf(f);
 	//cf.print();
-	cout << cf(1.3);
-	cf(2.4);
-	cout << cf.count;
-
-
+	cf(1.3); cf(2.4);
+	cout << format("f was called {} times\n", cf.count);
 }
