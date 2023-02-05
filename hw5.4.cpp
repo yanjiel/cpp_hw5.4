@@ -9,16 +9,14 @@ using namespace std;
 int f(double d) {return static_cast <int> (2 * d);}
 
 
-
-
-
-
 template<typename T1, typename T2>
-class ctr {
+class Counter {
 public:
-	ctr():count(0) {}
+	static int count;
 
-	ctr(T1(*func)(T2)) {
+	Counter():count(0) {}
+
+	Counter(T1(*func)(T2)) {
 		count = 0;
 		fun = func;
 		//cout << typeid(func).name() << ", " << typeid(fun).name() << ", " << typeid(*fun).name() << endl;
@@ -37,38 +35,37 @@ public:
 	}
 
 private:
-	static int count;
 	T1 (*fun) (T2) = NULL;
 };
 
 template <typename T1, typename T2>
-int ctr<T1, T2>::count = 0;
-
-class Counter {
-public:
-	template<typename T1, typename T2>
-	Counter(T1(*func)(T2)) {
-		cout << typeid(func).name() << ", " << typeid(*func).name() << endl;
-		ctr<T1, T2> *counter = new ctr<T1, T2>(func);
-		cout << typeid(counter).name() << ", " << typeid(*counter).name() << endl;
-	}
-
-	/*template<typename T1, typename T2>
-	T1 operator()(T2&& arg) {
-		return (*counter)(forward<T2>(arg));
-	}*/
-
-private:
-	template<typename T1, typename T2>
-	static ctr<T1, T2> counter;
-
-};
+int Counter<T1, T2>::count = 0;
 
 
 
+//class CounterWrapper {
+//public:
+//	template<typename T1, typename T2>
+//	CounterWrapper(T1(*func)(T2)) {
+//		cout << typeid(func).name() << ", " << typeid(*func).name() << endl;
+//		Counter<T1, T2> *counter = new Counter<T1, T2>(func);
+//		cout << typeid(counter).name() << ", " << typeid(*counter).name() << endl;
+//	}
+//
+//	template<typename T1, typename T2>
+//	T1 operator()(T2&& arg) {
+//		return (Counter<T1, T2> *counter)(arg);
+//	}
+//
+//private:
+//	template<typename T1, typename T2>
+//	static Counter<T1, T2> counter;
+//
+//};
+//
 
-
-
+//
+//
 //class Counter2 {
 //public:
 //	Counter2() : count(0) {}
@@ -98,19 +95,17 @@ private:
 //	static T1(*op) (T2);
 //
 //};
-
+//
 
 		
 
 int main() {
 
-	/*Counter2 cf(f);
-	cf(1.3);*/
-	
 	Counter cf(f);
+	//cf.print();
+	cout << cf(1.3);
+	cf(2.4);
+	cout << cf.count;
 
-	/*ctr<int, double> cf(f);
-	cf.print();
-	cout << cf(1.3);*/
 
 }
