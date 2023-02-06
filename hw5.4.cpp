@@ -1,3 +1,5 @@
+//Compile with ISO C++20 Standards/std:c++20
+
 #include<algorithm>
 #include<iostream>
 #include<string>
